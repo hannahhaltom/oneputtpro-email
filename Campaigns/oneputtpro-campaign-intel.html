@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OnePuttPro Campaign Intel</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #060c16;
+  --surface: #0d1726;
+  --card: #10203a;
+  --card2: #0f1e38;
+  --border: #1a3050;
+  --border2: #243d5c;
+  --accent: #dc2626;
+  --accent2: #ef4444;
+  --text: #e2e8f0;
+  --muted: #6b8cac;
+  --dim: #324d6a;
+  --green: #22c55e;
+  --green-dim: rgba(34,197,94,0.12);
+  --amber: #f59e0b;
+  --amber-dim: rgba(245,158,11,0.12);
+  --blue: #3b82f6;
+  --blue-dim: rgba(59,130,246,0.12);
+  --purple: #a855f7;
+  --purple-dim: rgba(168,85,247,0.12);
+  --red-dim: rgba(220,38,38,0.1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 0;
+}
+
+.page { max-width: 1280px; margin: 0 auto; padding: 36px 28px 60px; }
+
+/* ─── HEADER ─── */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom: 22px;
+  margin-bottom: 32px;
+  border-bottom: 2px solid var(--accent);
+}
+.logo-sub {
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 5px;
+}
+.header-meta {
+  text-align: right;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+.header-meta strong { color: var(--text); }
+
+/* ─── KPI TILES ─── */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.kpi {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+}
+.kpi::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--accent);
+}
+.kpi.green::after { background: var(--green); }
+.kpi.blue::after { background: var(--blue); }
+.kpi.amber::after { background: var(--amber); }
+.kpi.purple::after { background: var(--purple); }
+.kpi-label {
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 9px;
+}
+.kpi-val {
+  font-family: Impact, 'Arial Black', sans-serif;
+  font-size: 34px;
+  line-height: 1;
+  color: #fff;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+.kpi-val.green { color: var(--green); }
+.kpi-val.amber { color: var(--amber); }
+.kpi-val.blue { color: var(--blue); }
+.kpi-val.purple { color: var(--purple); }
+.kpi-note { font-size: 11px; color: var(--dim); margin-top: 6px; line-height: 1.4; }
+
+/* ─── SECTION LABEL ─── */
+.slabel {
+  font-size: 9px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+/* ─── CHARTS ROW ─── */
+.charts-row {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 22px;
+}
+.panel-title {
+  font-size: 9px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 18px;
+}
+
+/* ─── CALC WIDGET ─── */
+.calc-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.calc-lbl {
+  width: 90px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+.calc-inp {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  padding: 8px 12px;
+  outline: none;
+  transition: border-color .15s;
+}
+.calc-inp:focus { border-color: var(--accent); }
+.calc-result-box {
+  background: var(--surface);
+  border: 1px solid var(--dim);
+  padding: 16px;
+  margin-top: 14px;
+  text-align: center;
+}
+.big-num {
+  font-family: Impact, 'Arial Black', sans-serif;
+  font-size: 52px;
+  line-height: 1;
+  color: var(--accent2);
+  font-weight: 400;
+}
+.big-num.green { color: var(--green); }
+.big-label {
+  font-size: 9px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.calc-detail { font-size: 11px; color: var(--dim); margin-top: 8px; }
+
+/* ─── TABLE ─── */
+.table-wrap {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 22px;
+  margin-bottom: 28px;
+  overflow-x: auto;
+}
+table { width: 100%; border-collapse: collapse; }
+th {
+  text-align: left;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+td {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(26,48,80,0.5);
+  vertical-align: middle;
+  font-size: 13px;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(255,255,255,0.015); }
+.inp-cell {
+  background: transparent;
+  border: none;
+  border-bottom: 1px dashed var(--dim);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  width: 100px;
+  padding: 3px 4px;
+  outline: none;
+  transition: border-color .15s, background .15s;
+}
+.inp-cell:focus { border-bottom-color: var(--accent); background: rgba(220,38,38,0.04); }
+.inp-cell::placeholder { color: var(--dim); font-style: italic; }
+.badge {
+  display: inline-block;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+}
+.badge-sent { background: var(--green-dim); color: var(--green); }
+.badge-sched { background: var(--amber-dim); color: var(--amber); }
+.badge-tbd { background: rgba(26,48,80,0.5); color: var(--dim); }
+.aud-consumer { color: var(--accent2); }
+.aud-pro { color: var(--blue); }
+.aud-retailer { color: var(--green); }
+.roi-val { font-weight: 600; font-size: 13px; }
+.roi-great { color: var(--green); }
+.roi-good { color: var(--amber); }
+.roi-low { color: var(--accent2); }
+.roi-none { color: var(--dim); }
+.confirmed-rev { color: var(--green); font-weight: 600; }
+.cell-note { font-size: 10px; color: var(--dim); font-style: italic; }
+
+/* ─── BOTTOM ROW ─── */
+.bottom-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+}
+
+/* ─── PROJECTIONS ─── */
+.proj-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 11px 0;
+  border-bottom: 1px solid rgba(26,48,80,0.5);
+  gap: 12px;
+}
+.proj-row:last-child { border-bottom: none; }
+.proj-lname { font-size: 12px; color: var(--text); }
+.proj-lsub { font-size: 10px; color: var(--dim); margin-top: 2px; }
+.proj-rval { font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; }
+.proj-rval.muted { color: var(--dim); font-weight: 400; }
+.proj-note {
+  background: var(--red-dim);
+  border-left: 2px solid var(--accent);
+  padding: 9px 12px;
+  margin-top: 14px;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* ─── SCHEDULE ─── */
+.sched-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 11px 0;
+  border-bottom: 1px solid rgba(26,48,80,0.5);
+}
+.sched-item:last-child { border-bottom: none; }
+.sched-date { font-size: 11px; color: var(--muted); width: 68px; flex-shrink: 0; padding-top: 3px; }
+.sched-tag {
+  font-size: 8px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  display: inline-block;
+  margin-bottom: 4px;
+}
+.tag-c { background: var(--red-dim); color: var(--accent2); }
+.tag-p { background: var(--blue-dim); color: var(--blue); }
+.tag-r { background: var(--green-dim); color: var(--green); }
+.sched-name { font-size: 12px; color: var(--text); }
+.sched-note { font-size: 10px; color: var(--dim); margin-top: 2px; }
+
+/* ─── SIGNALS ─── */
+.signal {
+  padding: 10px 12px 10px 14px;
+  margin-bottom: 8px;
+  border-left: 2px solid var(--accent);
+  background: rgba(10,20,36,0.5);
+}
+.signal.blue { border-color: var(--blue); }
+.signal.green { border-color: var(--green); }
+.signal.amber { border-color: var(--amber); }
+.signal.purple { border-color: var(--purple); }
+.signal-title { font-size: 11px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+.signal-body { font-size: 11px; color: var(--muted); line-height: 1.55; }
+
+/* ─── HOLIDAY CALC ─── */
+.holiday-result {
+  background: var(--surface);
+  border: 1px solid var(--dim);
+  padding: 14px;
+  margin-top: 14px;
+  text-align: center;
+}
+
+/* ─── GALLERY ─── */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.gallery-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.gallery-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+.gallery-cap {
+  padding: 10px 14px 12px;
+}
+.gallery-cap-label {
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.gallery-cap-sub {
+  font-size: 11px;
+  color: var(--dim);
+  margin-top: 3px;
+}
+
+/* ─── FOOTER ─── */
+.footer {
+  margin-top: 48px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+  font-size: 10px;
+  color: var(--dim);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 900px) {
+  .kpi-row { grid-template-columns: repeat(3, 1fr); }
+  .charts-row { grid-template-columns: 1fr; }
+  .bottom-row { grid-template-columns: 1fr; }
+  .gallery-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .kpi-row { grid-template-columns: repeat(2, 1fr); }
+  .header { flex-direction: column; gap: 12px; align-items: flex-start; }
+  .header-meta { text-align: left; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ══════════ HEADER ══════════ -->
+<div class="header">
+  <div style="display:flex;align-items:center;gap:24px">
+    <img src="https://ngf360.com/wp-content/uploads/2026/09/OnePuttPro.png" alt="OnePuttPro" style="height:52px;width:auto;display:block;background:#000;padding:4px 8px">
+    <div>
+      <div style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--accent);font-family:'Inter',sans-serif;font-weight:600">Campaign Intelligence</div>
+      <div class="logo-sub" style="margin-top:4px">National Golf Foundation — Agency Services &nbsp;·&nbsp; Hannah Haltom</div>
+    </div>
+  </div>
+  <div class="header-meta">
+    <strong>Last updated:</strong> Sep 24, 2026<br>
+    Client contact: Tanya Munro — tanya@oneputtpro.com<br>
+    <span style="color:var(--dim)">NGF internal use only — confidential</span>
+  </div>
+</div>
+
+<!-- ══════════ KPI TILES ══════════ -->
+<div class="kpi-row">
+  <div class="kpi">
+    <div class="kpi-label">Total Confirmed Rev</div>
+    <div class="kpi-val" id="kpiRev">$10,855</div>
+    <div class="kpi-note">Aug confirmed by Tanya (9/3)</div>
+  </div>
+  <div class="kpi green">
+    <div class="kpi-label">Units Sold</div>
+    <div class="kpi-val green" id="kpiUnits">37</div>
+    <div class="kpi-note">Aug confirmed · $297 unit price</div>
+  </div>
+  <div class="kpi amber">
+    <div class="kpi-label">Blasts Sent</div>
+    <div class="kpi-val amber" id="kpiSends">3</div>
+    <div class="kpi-note">Aug + 2× Sep sends</div>
+  </div>
+  <div class="kpi blue">
+    <div class="kpi-label">Aug ROI</div>
+    <div class="kpi-val blue" id="kpiRoi">443%</div>
+    <div class="kpi-note">$2k cost → $10,855 revenue</div>
+  </div>
+  <div class="kpi purple">
+    <div class="kpi-label">Break-Even</div>
+    <div class="kpi-val purple">7</div>
+    <div class="kpi-note">Units to cover $2k blast cost</div>
+  </div>
+</div>
+
+<!-- ══════════ CHART + CALC ══════════ -->
+<div class="charts-row">
+  <div class="panel">
+    <div class="panel-title">Revenue by Campaign — Enter actuals below to update chart</div>
+    <canvas id="revenueChart" height="175"></canvas>
+  </div>
+  <div class="panel">
+    <div class="panel-title">ROI Calculator</div>
+    <div class="calc-field">
+      <div class="calc-lbl">Blast Cost</div>
+      <input class="calc-inp" id="cCost" type="number" value="2000">
+    </div>
+    <div class="calc-field">
+      <div class="calc-lbl">Units Sold</div>
+      <input class="calc-inp" id="cUnits" type="number" placeholder="e.g. 37">
+    </div>
+    <div class="calc-field">
+      <div class="calc-lbl">Revenue</div>
+      <input class="calc-inp" id="cRev" type="number" placeholder="auto-fills at $297/unit">
+    </div>
+    <div class="calc-result-box">
+      <div class="big-num" id="cRoiNum">—</div>
+      <div class="big-label">Return on Investment</div>
+      <div class="calc-detail" id="cDetail">Enter cost + units or revenue to calculate</div>
+    </div>
+
+    <div style="margin-top:22px">
+      <div class="panel-title">Holiday Multiplier</div>
+      <div class="calc-field">
+        <div class="calc-lbl">Base Rev</div>
+        <input class="calc-inp" id="hBase" type="number" value="10855">
+      </div>
+      <div class="calc-field">
+        <div class="calc-lbl">Uplift</div>
+        <select class="calc-inp" id="hMult">
+          <option value="1">1.0× — Flat baseline</option>
+          <option value="1.25">1.25× — Mild gift-giving</option>
+          <option value="1.5" selected>1.5× — Moderate holiday</option>
+          <option value="2.0">2.0× — Black Friday push</option>
+          <option value="2.5">2.5× — Peak Cyber 5</option>
+        </select>
+      </div>
+      <div class="holiday-result">
+        <div class="big-num green" id="hResult">$16,283</div>
+        <div class="big-label">Projected Revenue</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ WOOCOMMERCE DATA SOURCE NOTE ══════════ -->
+<div style="background:#0a1e14;border:1px solid #1a4030;border-left:3px solid #22c55e;padding:14px 18px;margin-bottom:16px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px 24px">
+  <div style="grid-column:1/-1;margin-bottom:8px">
+    <span style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#22c55e">WooCommerce Source Data</span>
+    <span style="font-size:11px;color:#4d7a62;margin-left:12px">Screenshots from Tanya · OnePuttPro NGF Special Offer (OPP-1-3)</span>
+  </div>
+  <div>
+    <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#4d7a62">Jun 2026</div>
+    <div style="font-size:15px;font-weight:600;color:#22c55e;font-variant-numeric:tabular-nums">$5,644.70</div>
+    <div style="font-size:11px;color:#4d7a62">18 units · $313.59 avg · Full month</div>
+  </div>
+  <div>
+    <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#4d7a62">Jul 28 – Aug 3</div>
+    <div style="font-size:15px;font-weight:600;color:#22c55e;font-variant-numeric:tabular-nums">$2,628.45</div>
+    <div style="font-size:11px;color:#4d7a62">9 units · Aug 1 peak</div>
+  </div>
+  <div>
+    <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#4d7a62">Aug 13–19 spike</div>
+    <div style="font-size:15px;font-weight:600;color:#22c55e;font-variant-numeric:tabular-nums">$5,301.45</div>
+    <div style="font-size:11px;color:#4d7a62">18 units · Aug 15 peak (8 units/day)</div>
+  </div>
+  <div>
+    <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#4d7a62">Sep through 9/22</div>
+    <div style="font-size:15px;font-weight:600;color:#22c55e;font-variant-numeric:tabular-nums">$4,752.00</div>
+    <div style="font-size:11px;color:#4d7a62">16 units · Sep 12 ~4 units, Sep 19 ~8 units</div>
+  </div>
+</div>
+
+<!-- ══════════ CAMPAIGN LOG ══════════ -->
+<div class="table-wrap">
+  <div class="panel-title">Campaign Log — Click cells marked "enter" to add actuals · ROI auto-calculates</div>
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Campaign</th>
+        <th>Audience</th>
+        <th>Revenue</th>
+        <th>Cost</th>
+        <th>Units</th>
+        <th>ROI</th>
+        <th>Profit</th>
+        <th>Status</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody id="logBody"></tbody>
+  </table>
+  <div style="margin-top:10px;font-size:10px;color:var(--dim)">
+    * Revenue auto-estimates at $297/unit when units entered; override by typing actual revenue. Confirmed Aug data locked.
+  </div>
+</div>
+
+<!-- ══════════ BOTTOM: PROJECTIONS / SCHEDULE / SIGNALS ══════════ -->
+<div class="bottom-row">
+
+  <!-- Projections -->
+  <div class="panel">
+    <div class="panel-title">Upcoming Revenue Projections</div>
+    <div class="proj-row">
+      <div><div class="proj-lname">Aug 2026 (baseline)</div><div class="proj-lsub">Confirmed — locked</div></div>
+      <div class="proj-rval" style="color:var(--green)">$10,855</div>
+    </div>
+    <div class="proj-row">
+      <div><div class="proj-lname">Sep 26 Consumer</div><div class="proj-lsub">Audience refresh · new exposure</div></div>
+      <div class="proj-rval">$9k–$13k</div>
+    </div>
+    <div class="proj-row">
+      <div><div class="proj-lname">Sep 28–29 PGA Pro</div><div class="proj-lsub">Smaller list · higher intent</div></div>
+      <div class="proj-rval">$3k–$7k</div>
+    </div>
+    <div class="proj-row">
+      <div><div class="proj-lname">Oct 10 Consumer</div><div class="proj-lsub">Pre-holiday awareness</div></div>
+      <div class="proj-rval">$8k–$12k</div>
+    </div>
+    <div class="proj-row">
+      <div><div class="proj-lname">Oct 24 Consumer</div><div class="proj-lsub">Gift-giving creative · holiday window</div></div>
+      <div class="proj-rval">$10k–$15k</div>
+    </div>
+    <div class="proj-row">
+      <div><div class="proj-lname">Retailer series (3×)</div><div class="proj-lsub">New channel · track separately</div></div>
+      <div class="proj-rval muted">TBD</div>
+    </div>
+    <div class="proj-note">
+      Ranges based on Aug 2026 baseline and email benchmarks for golf equipment. Update the log as sends complete — projections will sharpen with each new data point. Holiday multiplier tool above adjusts for Cyber 5 / Black Friday lift.
+    </div>
+  </div>
+
+  <!-- Schedule -->
+  <div class="panel">
+    <div class="panel-title">Approved Send Schedule</div>
+    <div id="schedList"></div>
+  </div>
+
+  <!-- Signals -->
+  <div class="panel">
+    <div class="panel-title">Behavioral Signals to Track</div>
+    <div class="signal">
+      <div class="signal-title">Creative Fatigue Risk</div>
+      <div class="signal-body">Consumer list gets 3× sends in Sep alone. If open rates drop 20%+, rotate creative or refresh audience before next blast.</div>
+    </div>
+    <div class="signal blue">
+      <div class="signal-title">Pro Segment — Validated Intent</div>
+      <div class="signal-body">PGA member Dave Sanford asked if $297 was member pricing on the Aug pro email. Track reply rate and conversion for the PGA list separately from consumer.</div>
+    </div>
+    <div class="signal green">
+      <div class="signal-title">Holiday Window: Nov 28–Dec 1</div>
+      <div class="signal-body">Black Friday through Cyber Monday is peak intent. Plan a consumer creative refresh by Nov 10 to capture the Cyber 5 window at full strength.</div>
+    </div>
+    <div class="signal amber">
+      <div class="signal-title">Retailer Channel — New Baseline</div>
+      <div class="signal-body">First retailer sends start Oct 16. Retailer orders are likely bulk (higher AOV). Log separately from consumer to build a distinct benchmark.</div>
+    </div>
+    <div class="signal purple">
+      <div class="signal-title">Landing Page Opportunity</div>
+      <div class="signal-body">LP improvement flagged in Sep 23 email. A/B test before Oct 10 consumer blast — even a 5% conversion lift at current traffic = material revenue gain.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════ CREATIVE GALLERY ══════════ -->
+<div style="margin-top:28px;margin-bottom:28px">
+  <div class="slabel">Campaign Creative — Product Photography</div>
+  <div class="gallery-grid">
+    <div class="gallery-card">
+      <img src="https://ngf360.com/wp-content/uploads/2026/09/OnePuttPro-39-scaled.jpg" alt="OnePuttPro device lifestyle">
+      <div class="gallery-cap">
+        <div class="gallery-cap-label">Device Lifestyle</div>
+        <div class="gallery-cap-sub">OnePuttPro — Photo #39</div>
+      </div>
+    </div>
+    <div class="gallery-card">
+      <img src="https://ngf360.com/wp-content/uploads/2026/09/OnePuttPro-50-scaled.jpg" alt="OnePuttPro app data in context">
+      <div class="gallery-cap">
+        <div class="gallery-cap-label">App + Device</div>
+        <div class="gallery-cap-sub">OnePuttPro — Photo #50</div>
+      </div>
+    </div>
+    <div class="gallery-card">
+      <img src="https://ngf360.com/wp-content/uploads/2026/09/OnePuttPro-38-scaled.jpg" alt="OnePuttPro putting session">
+      <div class="gallery-cap">
+        <div class="gallery-cap-label">Putting Session</div>
+        <div class="gallery-cap-sub">OnePuttPro — Photo #38</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ FOOTER ══════════ -->
+<div class="footer">
+  <span>OnePuttPro, LLC · Client of NGF Agency Services · All figures confidential</span>
+  <span>NGF approved AI environment · hhaltom@ngf.org</span>
+</div>
+
+</div><!-- end .page -->
+
+<script>
+// ── DATA ──────────────────────────────────────────────
+const UNIT_PRICE = 297;
+
+const CAMPAIGNS = [
+  // ── HISTORICAL — from WooCommerce screenshots (Tanya) ──────────────────────
+  { id:'jun',    date:'Jun 2026',       label:'Consumer Sales',   aud:'consumer', rev:5644.70,  cost:null, units:18,   status:'sent',  locked:true,  note:'WooCommerce: $5,644.70 / 18 units. $313.59 avg unit price (may reflect earlier pricing). Blast cost not on file.' },
+  { id:'julaug', date:'Jul 28–Aug 3',   label:'Consumer Sales',   aud:'consumer', rev:2628.45,  cost:null, units:9,    status:'sent',  locked:true,  note:'WooCommerce: $2,628.45 / 9 units. Aug 1 peak (~6 units). Blast cost not on file.' },
+  // ── CONFIRMED — Tanya email 9/3/26 ────────────────────────────────────────
+  { id:'aug',    date:'Aug 2026',       label:'Consumer Blast',   aud:'consumer', rev:10855.35, cost:2000, units:37,   status:'sent',  locked:true,  note:'Confirmed by Tanya 9/3/26. Aug 13–19 WooCommerce spike: $5,301.45 / 18 units. Best confirmed month.' },
+  // ── SEPTEMBER — WooCommerce: $4,752 / 16 units total through Sep 22 ───────
+  { id:'sep1',   date:'Sep 2026 (1st)', label:'Consumer Blast',   aud:'consumer', rev:null,     cost:2000, units:null, status:'sent',  locked:false, note:'Sep 12 spike visible in WooCommerce (~4–5 units). Sep total through 9/22: $4,752 / 16 units — enter per-send actuals.' },
+  { id:'sep19',  date:'Sep 19, 2026',   label:'Consumer Blast',   aud:'consumer', rev:null,     cost:2000, units:null, status:'sent',  locked:false, note:'Sep 19 spike ~8 units (largest in Sep WooCommerce data). Best creative to date. Enter actuals.' },
+  // ── SCHEDULED ─────────────────────────────────────────────────────────────
+  { id:'sep26',  date:'Sep 26, 2026',   label:'Consumer Blast',   aud:'consumer', rev:null,     cost:2000, units:null, status:'sched', locked:false, note:'Audience refresh. Tanya-approved 9/24.' },
+  { id:'sep28',  date:'Sep 28–29',      label:'PGA Pro Email',    aud:'pro',      rev:null,     cost:2000, units:null, status:'sched', locked:false, note:'Light theme. "Exclusive NGF Member Pricing." Weekday send.' },
+  { id:'oct10',  date:'Oct 10, 2026',   label:'Consumer Blast',   aud:'consumer', rev:null,     cost:2000, units:null, status:'sched', locked:false, note:'Tanya-approved send.' },
+  { id:'oct16',  date:'Oct 16, 2026',   label:'Retailer Blast',   aud:'retailer', rev:null,     cost:2000, units:null, status:'sched', locked:false, note:'1st of 3 retailer sends. New channel — track separately.' },
+  { id:'oct24',  date:'Oct 24, 2026',   label:'Consumer Blast',   aud:'consumer', rev:null,     cost:2000, units:null, status:'sched', locked:false, note:'Pre-holiday creative. Gift-giving positioning.' },
+  { id:'oct29',  date:'Oct 29, 2026',   label:'Retailer Blast',   aud:'retailer', rev:null,     cost:2000, units:null, status:'sched', locked:false, note:'2nd retailer send.' },
+  { id:'nov5',   date:'Nov 5, 2026',    label:'Retailer Blast',   aud:'retailer', rev:null,     cost:2000, units:null, status:'tbd',   locked:false, note:'TBD. 3rd retailer. Pending Tanya confirm.' },
+];
+
+const state = {};
+CAMPAIGNS.forEach(c => {
+  state[c.id] = { rev: c.rev, units: c.units, cost: c.cost };
+});
+
+// ── HELPERS ──────────────────────────────────────────
+const fmtUSD = n => n == null ? '—' : '$' + Math.round(n).toLocaleString('en-US');
+const fmtPct = n => n == null ? null : (n >= 0 ? '+' : '') + Math.round(n) + '%';
+const roi = (rev, cost) => (rev && cost) ? ((rev - cost) / cost) * 100 : null;
+
+// ── TABLE ─────────────────────────────────────────────
+function buildTable() {
+  const tbody = document.getElementById('logBody');
+  tbody.innerHTML = '';
+
+  CAMPAIGNS.forEach(c => {
+    const s = state[c.id];
+    const r = roi(s.rev, s.cost);
+    const profit = (s.rev && s.cost) ? s.rev - s.cost : null;
+
+    let revCell;
+    if (c.locked) {
+      revCell = `<span class="confirmed-rev">${fmtUSD(s.rev)}</span>`;
+    } else if (c.status === 'sent') {
+      revCell = `<input class="inp-cell" type="number" placeholder="enter actual" value="${s.rev || ''}" data-id="${c.id}" data-field="rev" oninput="onCell(this)">`;
+    } else {
+      revCell = `<span class="roi-none">—</span>`;
+    }
+
+    let unitsCell;
+    if (c.locked) {
+      unitsCell = `<span class="confirmed-rev">${s.units}</span>`;
+    } else if (c.status === 'sent') {
+      unitsCell = `<input class="inp-cell" type="number" placeholder="enter" value="${s.units || ''}" style="width:70px" data-id="${c.id}" data-field="units" oninput="onCell(this)">`;
+    } else {
+      unitsCell = `<span class="roi-none">—</span>`;
+    }
+
+    let roiClass = 'roi-none', roiTxt = '—';
+    if (r !== null) {
+      roiTxt = fmtPct(r);
+      roiClass = r >= 400 ? 'roi-great' : r >= 150 ? 'roi-good' : 'roi-low';
+    }
+
+    const statusMap = { sent:'badge-sent', sched:'badge-sched', tbd:'badge-tbd' };
+    const statusLbl = { sent:'✓ SENT', sched:'SCHED', tbd:'TBD' };
+    const audClass = { consumer:'aud-consumer', pro:'aud-pro', retailer:'aud-retailer' };
+    const audLbl = { consumer:'Consumer', pro:'PGA Pro / Instr.', retailer:'Ind. Retailer' };
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td style="color:var(--muted);white-space:nowrap;font-size:12px">${c.date}</td>
+      <td>${c.label}</td>
+      <td class="${audClass[c.aud]}" style="font-size:11px">${audLbl[c.aud]}</td>
+      <td>${revCell}</td>
+      <td style="color:var(--dim)">${fmtUSD(s.cost)}</td>
+      <td>${unitsCell}</td>
+      <td class="roi-val ${roiClass}">${roiTxt}</td>
+      <td style="color:${profit ? (profit > 0 ? 'var(--green)' : 'var(--accent2)') : 'var(--dim)'};font-weight:${profit ? 600 : 400}">${fmtUSD(profit)}</td>
+      <td><span class="badge ${statusMap[c.status]}">${statusLbl[c.status]}</span></td>
+      <td class="cell-note">${c.note}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function onCell(el) {
+  const id = el.dataset.id;
+  const field = el.dataset.field;
+  const val = parseFloat(el.value) || null;
+  state[id][field] = val;
+  if (field === 'units' && val && !document.querySelector(`[data-id="${id}"][data-field="rev"]`)?.value) {
+    state[id].rev = val * UNIT_PRICE;
+  }
+  buildTable();
+  updateKPIs();
+  updateChart();
+}
+
+// ── KPIS ─────────────────────────────────────────────
+function updateKPIs() {
+  let totalRev = 0, totalUnits = 0, sends = 0;
+  CAMPAIGNS.forEach(c => {
+    if (c.status === 'sent') sends++;
+    const s = state[c.id];
+    if (s.rev) totalRev += s.rev;
+    if (s.units) totalUnits += s.units;
+  });
+  document.getElementById('kpiRev').textContent = '$' + Math.round(totalRev).toLocaleString();
+  document.getElementById('kpiUnits').textContent = totalUnits || 0;
+  document.getElementById('kpiSends').textContent = sends;
+  const r = roi(state['aug'].rev, state['aug'].cost);
+  if (r) document.getElementById('kpiRoi').textContent = Math.round(r) + '%';
+}
+
+// ── CHART ────────────────────────────────────────────
+let chart;
+function buildChart() {
+  const ctx = document.getElementById('revenueChart').getContext('2d');
+  chart = new Chart(ctx, {
+    type: 'bar',
+    data: getChartData(),
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => ctx.raw > 0 ? fmtUSD(ctx.raw) : 'No data yet'
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: '#6b8cac', font: { size: 10 }, maxRotation: 40 },
+          grid: { color: 'rgba(26,48,80,0.4)' }
+        },
+        y: {
+          ticks: { color: '#6b8cac', callback: v => v === 0 ? '' : '$' + (v/1000).toFixed(0) + 'k' },
+          grid: { color: 'rgba(26,48,80,0.4)' }
+        }
+      }
+    }
+  });
+}
+
+function getChartData() {
+  const labels = CAMPAIGNS.map(c => c.date.replace(', 2026', '').replace(' 2026', ''));
+  const data = CAMPAIGNS.map(c => state[c.id].rev || 0);
+  const colors = CAMPAIGNS.map(c => {
+    const s = state[c.id];
+    if (s.rev) return 'rgba(220,38,38,0.85)';
+    if (c.status === 'sent') return 'rgba(220,38,38,0.25)';
+    if (c.status === 'sched') return 'rgba(59,130,246,0.2)';
+    return 'rgba(26,48,80,0.4)';
+  });
+  return { labels, datasets: [{ data, backgroundColor: colors, borderWidth: 0, borderRadius: 1 }] };
+}
+
+function updateChart() {
+  if (!chart) return;
+  const d = getChartData();
+  chart.data.labels = d.labels;
+  chart.data.datasets[0].data = d.datasets[0].data;
+  chart.data.datasets[0].backgroundColor = d.datasets[0].backgroundColor;
+  chart.update();
+}
+
+// ── ROI CALCULATOR ───────────────────────────────────
+function updateCalc() {
+  const cost = parseFloat(document.getElementById('cCost').value) || 0;
+  const units = parseFloat(document.getElementById('cUnits').value) || 0;
+  const revInput = document.getElementById('cRev');
+  let rev = parseFloat(revInput.value) || 0;
+
+  if (units > 0 && !revInput.value) {
+    rev = units * UNIT_PRICE;
+    revInput.placeholder = fmtUSD(rev) + ' (at $297/unit)';
+  }
+
+  if (rev > 0 && cost > 0) {
+    const r = ((rev - cost) / cost) * 100;
+    const profit = rev - cost;
+    const numEl = document.getElementById('cRoiNum');
+    numEl.textContent = Math.round(r) + '%';
+    numEl.className = r >= 300 ? 'big-num green' : 'big-num';
+    document.getElementById('cDetail').textContent =
+      `Revenue ${fmtUSD(rev)}  ·  Cost ${fmtUSD(cost)}  ·  Profit ${fmtUSD(profit)}`;
+  } else {
+    document.getElementById('cRoiNum').textContent = '—';
+    document.getElementById('cRoiNum').className = 'big-num';
+    document.getElementById('cDetail').textContent = 'Enter cost + units or revenue to calculate';
+  }
+}
+['cCost','cUnits','cRev'].forEach(id => document.getElementById(id).addEventListener('input', updateCalc));
+
+// ── HOLIDAY CALC ─────────────────────────────────────
+function updateHoliday() {
+  const base = parseFloat(document.getElementById('hBase').value) || 10855;
+  const mult = parseFloat(document.getElementById('hMult').value) || 1.5;
+  document.getElementById('hResult').textContent = fmtUSD(base * mult);
+}
+['hBase','hMult'].forEach(id => {
+  document.getElementById(id).addEventListener('input', updateHoliday);
+  document.getElementById(id).addEventListener('change', updateHoliday);
+});
+
+// ── SCHEDULE ─────────────────────────────────────────
+const SCHEDULE = [
+  { date:'Sep 26', aud:'c', name:'Consumer Blast', note:'Audience refresh. Approved.' },
+  { date:'Sep 28–29', aud:'p', name:'PGA Pro Email', note:'Exclusive NGF pricing. Weekday send.' },
+  { date:'Oct 10', aud:'c', name:'Consumer Blast', note:'Tanya-approved.' },
+  { date:'Oct 16', aud:'r', name:'Retailer Blast #1', note:'New channel. Track AOV separately.' },
+  { date:'Oct 24', aud:'c', name:'Consumer Blast', note:'Gift-giving creative. Pre-Cyber 5.' },
+  { date:'Oct 29', aud:'r', name:'Retailer Blast #2', note:'Pre-November push.' },
+  { date:'Nov 5', aud:'r', name:'Retailer Blast #3', note:'TBD — pending Tanya confirm.' },
+];
+const tagMap = { c:'tag-c', p:'tag-p', r:'tag-r' };
+const tagLbl = { c:'CONSUMER', p:'PGA PRO', r:'RETAILER' };
+
+function buildSchedule() {
+  const el = document.getElementById('schedList');
+  el.innerHTML = SCHEDULE.map(s => `
+    <div class="sched-item">
+      <div class="sched-date">${s.date}</div>
+      <div>
+        <span class="sched-tag ${tagMap[s.aud]}">${tagLbl[s.aud]}</span>
+        <div class="sched-name">${s.name}</div>
+        <div class="sched-note">${s.note}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── INIT ─────────────────────────────────────────────
+buildTable();
+buildChart();
+buildSchedule();
+updateCalc();
+updateHoliday();
+</script>
+</body>
+</html>
